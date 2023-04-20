@@ -39,6 +39,7 @@
 </style>
 <body>
 <div>
+    <h2>Your Group id is <div id="ID"></div></h2>
   <div class="messageBox" id="box">
  </div>
   <div class="message">
@@ -52,7 +53,10 @@
     const username=params.get('username');
     let id=params.get('id');
     const box=document.getElementById('box');
+    const ID=document.getElementById('ID');
     const message=document.getElementById('input');
+    if(username&&id){
+        ID.value=id;
     const socket=io('https://itchat.onrender.com/');
      socket.on('connect',()=>{
         if(id==='create')
@@ -66,16 +70,16 @@
        });
     socket.on('roomJoined',(roomId)=>{           
         id=roomId;
+        ID.value=id;
         console.log(roomId)
     })
     socket.on('message',(data)=>{
         box.innerHTML+=`<div class="addMessageLeft"><div style="color:red;font-weight: bold;">${data.username}</div> ${data.message}</div>`;
-        console.log(data.username);
-        console.log(data.username);
     })
     function Send(){
         socket.emit('message',{username:username,id:id,message:message.value});
         box.innerHTML+=`<div class="addMessageRight"><div style="color:red;font-weight: bold;">${username}</div> ${message.value}</div>`;
     }
+}
 </script>
 </html>
