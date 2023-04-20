@@ -18,6 +18,7 @@ socket.on('createRoom',()=>{
 socket.on('joinRoom',(data)=>{
 if(io.sockets.adapter.rooms.has(data.id)){
 socket.join(data.id);
+socket.emit('roomJoined',data.id);
 }
 else{
 socket.emit('roomError');
