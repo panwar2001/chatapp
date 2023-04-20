@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .Form{
+        padding:5%;
+        background-color: grey;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+    </style>
+</head>
+<body bgcolor="black">
+ <fieldset class="Form">
+          <div >
+            <label for="name">Enter your Username: </label>
+            <input type="text"  placeholder="username..." style="height:20px"  name="name" id="name" required >
+          </div>
+          <div align="center">
+            <button onclick="createRoom()" style="border-radius: 20px;"><h3>Create Room</h3></button>
+          </div>
+          <br>
+          <div align="center">
+           <button onclick="joinRoom()" style="border-radius: 20px;"><h3>Join Room</h3></button>
+          </div>
+        </fieldset>
+</body>
+<script>
+    function createRoom(){
+        let username=document.getElementById('name').value;
+        window.location.href=`groupChat.html?username=${username}&id=create`;
+    }
+    function joinRoom(){
+        let username=document.getElementById('name').value;
+        let id=prompt('Enter Room Id');  
+        window.location.href=`groupChat.html?username=${username}&id=${id}`;
+     }
+</script>
+</html>

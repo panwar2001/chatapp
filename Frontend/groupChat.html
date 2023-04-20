@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+</head>
+<style>
+    .messageBox{
+        overflow:auto ;
+        background-color: rgb(0, 0, 0);
+        margin-right: 20%;
+        margin-left: 20%;
+        height: 600px;
+    }
+    .message{
+        margin-right: 20%;
+        margin-left: 20%;
+    }
+    .addMessageLeft{
+       background-color: rgb(144, 158, 144);
+       margin-right: 40%;
+       border-radius: 5px;
+       margin-bottom: 5%;
+       font-size: large;
+       font-weight: bold;
+    }
+    .addMessageRight{
+       background-color: rgb(131, 156, 131);
+       text-align: left;
+       border-radius: 5px;
+       margin-left: 40%;
+       margin-bottom: 5%;
+       font-size:large;
+       font-weight: bold;
+    }
+</style>
+<body>
+<div>
+  <div class="messageBox" id="box">
+ </div>
+  <div class="message">
+    <input type="text" style="width:800px;height:50px;font-size: 30px;border: 1px solid black;" id="input">
+    <button style="height:50px;width: 200px;font-size: 30px;" onclick="Send()">Send</button>
+  </div>
+</div>
+</body>
+<script>
+    const params=new URLSearchParams(window.location.search);
+    const username=params.get('username');
+    let id=params.get('id');
+    const box=document.getElementById('box');
+    const message=document.getElementById('input');
+    const socket=io('https://itchat.onrender.com/');
+     socket.on('connect',()=>{
+        if(id==='create')
+         socket.emit('createRoom')
+        else
+        socket.emit('joinRoom',{username:username,id:id});
+     })
+      socket.on('roomError',()=>{
+         window.location.href='Dashboard.html';
+         alert('INVALID ROOM ID!');
+       });
+    socket.on('roomJoined',(roomId)=>{           
+        id=roomId;
+        console.log(roomId)
+    })
+    socket.on('message',(data)=>{
+        box.innerHTML+=`<div class="addMessageLeft"><div style="color:red;font-weight: bold;">${data.username}</div> ${data.message}</div>`;
+        console.log(data.username);
+        console.log(data.username);
+    })
+    function Send(){
+        socket.emit('message',{username:username,id:id,message:message.value});
+        box.innerHTML+=`<div class="addMessageRight"><div style="color:red;font-weight: bold;">${username}</div> ${message.value}</div>`;
+    }
+</script>
+</html>
