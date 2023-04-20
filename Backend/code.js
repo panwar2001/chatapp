@@ -26,7 +26,7 @@ socket.disconnect();
 })
 
 socket.on('message',(data)=>{
- socket.broadcast.to(data.id).emit({username:data.username,message:data.message});
+ socket.broadcast.to(data.id).emit('message',{username:data.username,message:data.message});
  console.log(data.username);
  console.log(data.message);
 })
